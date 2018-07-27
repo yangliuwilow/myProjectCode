@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <properties resource="datasource.properties">
+    </properties>
+
+
+
+    <!-- 是否开启自动驼峰命名规则（camel case）映射，即从经典数据库列名 A_COLUMN 到经典 Java 属性名 aColumn 的类似映射。-->
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+
+    <!-- 类型别名是为 Java 类型设置一个短的名字-->
+    <typeAliases>
+        <!-- 1、typeAlias:为某个java类型起别名-->
+        <typeAlias alias="SysDept" type="com.willow.dao.model.SysDept"/>
+        <!-- 2、指定一个包名，为某个包下的所有类批量起别名 -->
+        <package name="com.willow.dao.model"/>
+        <!-- 3、批量的情况下，@Alias("author") 注解到类上,特定指定别名-->
+    </typeAliases>
+
+    <typeHandlers>
+        <!--1、配置我们自定义的TypeHandler  -->
+        <typeHandler handler="com.willow.typeHanlder.MyTypeHanlder" javaType="com.willow.dao.model.DelFlagEnum"/>
+        <!--2、也可以在处理某个字段的时候告诉MyBatis用什么类型处理器
+                保存：#{empStatus,typeHandler=xxxx}
+                查询：
+                    <resultMap type="com.atguigu.mybatis.bean.Employee" id="MyEmp">
+                         <id column="id" property="id"/>
+                         <result column="empStatus" property="empStatus" typeHandler=""/>
+                     </resultMap>
+                注意：如果在参数位置修改TypeHandler，应该保证保存数据和查询数据用的TypeHandler是一样的。
+          -->
+    </typeHandlers>
+
+    <!-- mybatis-config.xml  注册插件-->
+    <plugins>
+        <!--<plugin interceptor="com.willow.interceptor.ExamplePlugin">
+            <property name="someProperty" value="100"/>
+        </plugin>-->
+       <!-- 分页插件pagehelper -->
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+            <!--  使用下面的方式配置参数，后面会有所有的参数介绍 -->
+            <property name="param1" value="value1"/>
+        </plugin>
+    </plugins>
+    <!--
+            4、environments：环境们，mybatis可以配置多种环境 ,default指定使用某种环境。可以达到快速切换环境。
+                environment：配置一个具体的环境信息；必须有两个标签；id代表当前环境的唯一标识
+                    transactionManager：事务管理器；
+                        type：事务管理器的类型;JDBC(JdbcTransactionFactory)|MANAGED(ManagedTransactionFactory)
+                            自定义事务管理器：实现TransactionFactory接口.type指定为全类名
+
+                    dataSource：数据源;
+                        type:数据源类型;UNPOOLED(UnpooledDataSourceFactory)
+                                     |POOLED(PooledDataSourceFactory)
+                                    |JNDI(JndiDataSourceFactory)
+                        自定义数据源：实现DataSourceFactory接口，type是全类名
+             -->
+
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">  <!-- Configuration 中配置的-->
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.username}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <mapper resource="mybatis/mappers/SysDeptMapper.xml"/>
+    </mappers>
+
+</configuration>
