@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+
+    <!-- 提供方应用名称，用于计算依赖关系 -->
+    <dubbo:application name="spring-dubbo-provider"/>
+
+    <!-- 使用multicast注册中心暴露服务地址   默认为2181端口 -->
+    <dubbo:registry address="zookeeper://192.168.7.108:2181"/>
+
+    <!-- 使用dubbo协议，在20880端口暴露服务 -->
+    <dubbo:protocol name="dubbo" port="20880"/>
+
+    <bean id="userService" class="com.willow.service.impl.UserImpl"/>
+
+    <dubbo:service interface="com.willow.service.UserService" ref="userService" />
+</beans>

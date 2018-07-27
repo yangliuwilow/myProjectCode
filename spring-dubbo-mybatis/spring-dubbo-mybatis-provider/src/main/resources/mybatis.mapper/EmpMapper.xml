@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.willow.mapper.EmpMapper">
+  
+  <resultMap id="BaseResultMap" type="com.willow.entity.Emp">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="emp_name" jdbcType="VARCHAR" property="empName" />
+    <result column="emp_no" jdbcType="VARCHAR" property="empNo" />
+    <result column="emp_age" jdbcType="VARCHAR" property="empAge" />
+  </resultMap>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from emp
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="saveEmp" parameterType="com.willow.entity.Emp">
+    insert into emp
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="empName != null">
+        emp_name,
+      </if>
+      <if test="empNo != null">
+        emp_no,
+      </if>
+      <if test="empAge != null">
+        emp_age,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="empName != null">
+        #{empName,jdbcType=VARCHAR},
+      </if>
+      <if test="empNo != null">
+        #{empNo,jdbcType=VARCHAR},
+      </if>
+      <if test="empAge != null">
+        #{empAge,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateEmp" parameterType="com.willow.entity.Emp">
+    update emp
+    <set>
+      <if test="empName != null">
+        emp_name = #{empName,jdbcType=VARCHAR},
+      </if>
+      <if test="empNo != null">
+        emp_no = #{empNo,jdbcType=VARCHAR},
+      </if>
+      <if test="empAge != null">
+        emp_age = #{empAge,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <sql id="sql_columns">
+    id,emp_name,emp_no,emp_age
+  </sql>
+  
+  <sql id="sql_where">
+        <where>
+        <if test="null != id">
+             AND  id = #{id,jdbcType=INTEGER}
+        </if>
+        <if test="null != empName and '' != empName">
+             AND  emp_name = #{empName,jdbcType=VARCHAR}
+        </if>
+        <if test="null != empNo and '' != empNo">
+             AND  emp_no = #{empNo,jdbcType=VARCHAR}
+        </if>
+        <if test="null != empAge and '' != empAge">
+             AND  emp_age = #{empAge,jdbcType=VARCHAR}
+        </if>
+    </where>
+  </sql>
+  
+  <select id="selectById" resultMap="BaseResultMap">
+    select 
+    <include refid="sql_columns" />
+     from emp
+     where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectOne" parameterType="com.willow.entity.Emp" resultMap="BaseResultMap">
+    select 
+    <include refid="sql_columns" />
+     from emp
+    <include refid="sql_where" />
+  </select>
+  
+  <select id="selectList" parameterType="com.willow.entity.Emp" resultMap="BaseResultMap">
+    select 
+    <include refid="sql_columns" />
+     from emp
+    <include refid="sql_where" />
+  </select>
+  
+  <select id="selectPage" parameterType="com.willow.entity.Emp" resultMap="BaseResultMap">
+    select 
+    <include refid="sql_columns" />
+     from emp
+    <include refid="sql_where" />
+     limit #{page.startRow}, #{page.pageSize}
+  </select>
+  
+  <delete id="delArray">
+    delete from emp where id in
+    <foreach close=")" collection="array" index="index" item="item" open="(" separator=",">
+      #{item}
+    </foreach>
+  </delete>
+</mapper>
