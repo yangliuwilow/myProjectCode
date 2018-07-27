@@ -1,0 +1,53 @@
+spring:
+   datasource:
+     username: root
+     password: 123456
+     url: jdbc:mysql://192.168.7.108/willow
+     driver-class-name: com.mysql.jdbc.Driver
+     type: com.alibaba.druid.pool.DruidDataSource
+     #   数据源其他配置
+     initialSize: 5
+     minIdle: 5
+     maxActive: 20
+     maxWait: 60000
+     timeBetweenEvictionRunsMillis: 60000
+     minEvictableIdleTimeMillis: 300000
+     validationQuery: SELECT 1 FROM DUAL
+     testWhileIdle: true
+     testOnBorrow: false
+     testOnReturn: false
+     poolPreparedStatements: true
+ #   配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+     filters: stat,wall,log4j
+     maxPoolPreparedStatementPerConnectionSize: 20
+     useGlobalDataSourceStat: true
+     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+#    schema:  #自动生成表sql  list类型
+#       - classpath:sql/department.sql
+#       - classpath:sql/employee.sql
+   redis:
+      host: 192.168.7.108
+      port: 6379
+   elasticsearch:
+      jest:
+         uris: http://192.168.16.200:9200
+mybatis:
+   # 指定全局配置文件位置
+   config-location: classpath:mybatis/mybatis-config.xml
+   # 指定sql映射文件位置
+   mapper-locations: classpath:mybatis/mapper/*.xml
+#打印SQL
+logging:
+    level:
+      com:
+         willow:
+            mapper: debug
+
+#打开自动配置报告
+#debug: true
+server:
+  port: 8083
+management:
+    port: 8083
+    security:
+      enabled: false
