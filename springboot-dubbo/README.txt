@@ -1,1 +1,1 @@
-﻿Springboot 集成xml配置
+﻿Springboot 集成dubbo xml配置
