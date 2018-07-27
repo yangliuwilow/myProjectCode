@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+
+<mapper namespace="com.willow.core.system.model.ItcastUser">
+
+	<resultMap id="itcastUserResultMap" type="ItcastUser">
+        <result property="id" column="ID"/>
+        <result property="name" column="NAME"/>
+        <result property="loginname" column="LOGINNAME"/>
+        <result property="password" column="PASSWORD"/>
+        <result property="gender" column="GENDER"/>
+        <result property="phonenumber" column="PHONENUMBER"/>
+        <result property="description" column="DESCRIPTION"/>
+        <result property="email" column="EMAIL"/>
+        <result property="departmentid" column="DEPARTMENTID"/>
+        <result property="createDate" column="CREATE_DATE"/>
+        <result property="modifyDate" column="MODIFY_DATE"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="ItcastUserColumns">
+	    <![CDATA[
+		ID,NAME,LOGINNAME,PASSWORD,GENDER,PHONENUMBER,DESCRIPTION,EMAIL,DEPARTMENTID,CREATE_DATE,MODIFY_DATE
+	    ]]>
+	</sql>
+
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="id">
+            SELECT SEQ_ITCAST_USER.nextval AS ID FROM DUAL
+        </selectKey>
+    <![CDATA[
+        INSERT INTO ITCAST_USER (
+        	ID ,
+        	NAME ,
+        	LOGINNAME ,
+        	PASSWORD ,
+        	GENDER ,
+        	PHONENUMBER ,
+        	DESCRIPTION ,
+        	EMAIL ,
+        	DEPARTMENTID ,
+        	CREATE_DATE ,
+        	MODIFY_DATE 
+        ) VALUES (
+        	#{id,jdbcType=DECIMAL},
+        	#{name,jdbcType=VARCHAR},
+        	#{loginname,jdbcType=VARCHAR},
+        	#{password,jdbcType=VARCHAR},
+        	#{gender,jdbcType=VARCHAR},
+        	#{phonenumber,jdbcType=VARCHAR},
+        	#{description,jdbcType=VARCHAR},
+        	#{email,jdbcType=VARCHAR},
+        	#{departmentid,jdbcType=DECIMAL},
+        	#{createDate,jdbcType=TIMESTAMP},
+        	#{modifyDate,jdbcType=TIMESTAMP}
+        )
+    ]]>
+		<!--
+			oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL 
+			DB2: order="BEFORE"" values nextval for sequenceName
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+			SELECT sequenceName.nextval AS ID FROM DUAL 
+        </selectKey>
+		-->
+	</insert>
+    
+	<update id="update" >
+        UPDATE ITCAST_USER SET
+	        <if test="name!=null">
+	        NAME = #{name,jdbcType=VARCHAR} ,
+	        </if>
+	        <if test="loginname!=null">
+	        LOGINNAME = #{loginname,jdbcType=VARCHAR} ,
+	        </if>
+	        <if test="password!=null">
+	        PASSWORD = #{password,jdbcType=VARCHAR} ,
+	        </if>
+	        <if test="gender!=null">
+	        GENDER = #{gender,jdbcType=VARCHAR} ,
+	        </if>
+	        <if test="phonenumber!=null">
+	        PHONENUMBER = #{phonenumber,jdbcType=VARCHAR} ,
+	        </if>
+	        <if test="description!=null">
+	        DESCRIPTION = #{description,jdbcType=VARCHAR} ,
+	        </if>
+	        <if test="email!=null">
+	        EMAIL = #{email,jdbcType=VARCHAR} ,
+	        </if>
+	        <if test="departmentid!=null">
+	        DEPARTMENTID = #{departmentid,jdbcType=DECIMAL} ,
+	        </if>
+	        <if test="createDate!=null">
+	        CREATE_DATE = #{createDate,jdbcType=TIMESTAMP} ,
+	        </if>
+             MODIFY_DATE=sysdate
+        WHERE 
+	        ID = #{id} 
+	</update>
+
+    <delete id="delete">
+    <![CDATA[
+        DELETE FROM ITCAST_USER WHERE
+        ID = #{id} 
+    ]]>
+    </delete>
+    
+    <select id="getById" resultMap="itcastUserResultMap">
+		SELECT <include refid="ItcastUserColumns" />
+	    <![CDATA[
+		    FROM ITCAST_USER 
+	        WHERE 
+		        ID = #{id} 
+	    ]]>
+	</select>
+	
+	<sql id="listItcastUserWhere">
+		<!-- ognl访问静态方法的表达式 为@class@method(args),以下为调用rapid中的Ognl.isNotEmpty()方法,还有其它方法如isNotBlank()可以使用，具体请查看Ognl类 -->
+		<where>      				
+
+	       	<if test="id!=null and id!=''">
+				AND ID = #{id}
+			</if>
+	       	<if test="name!=null and name!=''">
+				AND NAME = #{name}
+			</if>
+	       	<if test="loginname!=null and loginname!=''">
+				AND LOGINNAME = #{loginname}
+			</if>
+	       	<if test="password!=null and password!=''">
+				AND PASSWORD = #{password}
+			</if>
+	       	<if test="gender!=null and gender!=''">
+				AND GENDER = #{gender}
+			</if>
+	       	<if test="phonenumber!=null and phonenumber!=''">
+				AND PHONENUMBER = #{phonenumber}
+			</if>
+	       	<if test="description!=null and description!=''">
+				AND DESCRIPTION = #{description}
+			</if>
+	       	<if test="email!=null and email!=''">
+				AND EMAIL = #{email}
+			</if>
+	       	<if test="departmentid!=null and departmentid!=''">
+				AND DEPARTMENTID = #{departmentid}
+			</if>
+	       	<if test="createDate!=null and createDate!=''">
+				AND CREATE_DATE = #{createDate}
+			</if>
+	       	<if test="modifyDate!=null and modifyDate!=''">
+				AND MODIFY_DATE = #{modifyDate}
+			</if>
+		</where>
+	</sql>
+		
+    <select id="getCountItcastUser" resultType="int">
+        SELECT count(*) FROM ITCAST_USER 
+		<include refid="listItcastUserWhere"/>
+    </select>
+    
+    <!--
+    	分页查询已经使用Dialect进行分页,也可以不使用Dialect直接编写分页
+    	因为分页查询将传 offset,pageSize,lastRows 三个参数,不同的数据库可以根于此三个参数属性应用不同的分页实现
+    -->
+    <select id="listItcastUser" resultMap="itcastUserResultMap">
+    	SELECT <include refid="ItcastUserColumns" />
+	    FROM ITCAST_USER 
+		<include refid="listItcastUserWhere"/>
+    </select>
+
+	
+</mapper>
+

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	 ">
+
+    <!--&lt;!&ndash;加载配置文件&ndash;&gt;
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:dubbo.properties</value>
+            </list>
+        </property>
+    </bean>
+    &lt;!&ndash; 消费方应用名，用于计算依赖关系，不是匹配条件，不要与提供方一样 &ndash;&gt;
+    <dubbo:application name="${dubbo.application.name}"/>
+    &lt;!&ndash; 使用zookeeper广播注册中心暴露发现服务地址  &ndash;&gt;
+    <dubbo:registry address="${dubbo.registry.address}"/>
+    <dubbo:protocol name="dubbo" dispatcher="all" threadpool="fixed" threads="600" />
+
+
+     &lt;!&ndash;权限 &ndash;&gt;
+    <dubbo:reference id="authFuncService" interface="com.willow.core.auth.service.AuthFuncService" timeout="60000" version="${dubbo.base.version}" check="false"/>
+    <dubbo:reference id="authUserRoleService" interface="com.willow.core.auth.service.AuthUserRoleService" timeout="60000" version="${dubbo.base.version}" check="false"/>
+    <dubbo:reference id="authRoleService" interface="com.willow.core.auth.service.AuthRoleService" timeout="60000" version="${dubbo.base.version}" check="false"/>
+    <dubbo:reference id="authRoleFuncService" interface="com.willow.core.auth.service.AuthRoleFuncService" timeout="60000" version="${dubbo.base.version}" check="false"/>
+    <dubbo:reference id="authUserService" interface="com.willow.core.auth.service.AuthUserService" timeout="60000" version="${dubbo.base.version}" check="false"/>
+
+
+    &lt;!&ndash; base-core start &ndash;&gt;
+    <dubbo:reference id="deptService" interface="com.willow.core.system.service.DeptService"  retries="0" timeout="60000" version="${dubbo.base.version}" check="false"/>
+    <dubbo:reference id="parameterService" interface="com.willow.core.system.service.ParameterService" retries="0" timeout="60000" version="${dubbo.base.version}" check="false"/>
+    <dubbo:reference id="humanService" interface="com.willow.core.system.service.HumanService" retries="0" timeout="60000" version="${dubbo.base.version}" check="false"/>
+    <dubbo:reference id="selfTitleService" interface="com.willow.core.system.service.SelfTitleService" retries="0" timeout="6000000" version="${dubbo.base.version}" check="false"/>
+    <dubbo:reference id="selfTitleSetService" interface="com.willow.core.system.service.SelfTitleSetService" retries="0" timeout="60000" version="${dubbo.base.version}" check="false"/>
+-->
+</beans>

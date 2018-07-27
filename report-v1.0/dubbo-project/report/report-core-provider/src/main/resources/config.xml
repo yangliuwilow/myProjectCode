@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD SQL Map Config 3.0//EN"  
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+        <typeAlias type="com.willow.core.system.model.ItcastUser" alias="ItcastUser"/>
+	</typeAliases>
+	<plugins>
+		 <plugin interceptor="com.willow.common.plugin.OffsetLimitInterceptor">
+			<property name="dialectClass" value="com.willow.common.dialect.OracleDialect" />
+		</plugin>
+	</plugins>
+	<mappers>
+        <mapper resource="mybatis/core/system/ItcastUser.xml"/>
+    </mappers>
+
+</configuration>

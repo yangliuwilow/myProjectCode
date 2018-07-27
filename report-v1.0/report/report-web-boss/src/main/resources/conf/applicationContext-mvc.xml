@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:util="http://www.springframework.org/schema/util" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/util
+        http://www.springframework.org/schema/util/spring-util-3.1.xsd
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context-3.1.xsd
+        http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <!-- 注解配置-->
+    <mvc:annotation-driven />
+    <aop:aspectj-autoproxy />
+    <!--action jar路径-->
+  <!--  <context:component-scan base-package="com.willow.web.auth"/>-->
+    <context:component-scan base-package="com.willow.web.*"/>
+    <!-- <context:component-scan base-package="com.willow.cache"/>-->
+
+   <!-- <mvc:interceptors>
+        <mvc:interceptor>
+            &lt;!&ndash; 匹配的是url路径， 如果不配置或/**,将拦截所有的Controller &ndash;&gt;
+            <mvc:mapping path="/admin/**" />
+            <mvc:mapping path="/auth/**" />
+            <mvc:mapping path="/system/**" />
+            <bean class="com.willow.interceptor.CommonInterceptor">
+                <property name="excludes" value="index.html,error/*"></property>
+            </bean>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="com.willow.interceptor.AppCommonToolHandlerInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>-->
+
+    <!--在springMVC-servlet.xml中配置<mvc:default-servlet-handler />后，会在Spring
+     MVC上下文中定义一个org.springframework.web.servlet.resource.DefaultServletHttpRequestHandler，
+     它会像一个检查员，对进入DispatcherServlet的URL进行筛查，
+     如果发现是静态资源的请求，就将该请求转由Web应用服务器默认的Servlet处理，
+     如果不是静态资源的请求，才由DispatcherServlet继续处理。-->
+    <mvc:default-servlet-handler/>
+    <mvc:resources mapping="/css/**" location="/css/" />
+    <mvc:resources mapping="/images/**" location="/images/" />
+    <mvc:resources mapping="/js/**" location="/js/" />
+
+
+
+    <!-- 配置freeMarker视图解析器 -->
+    <!--<bean id="viewResolverFtl"
+          class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+        <property name="viewClass" value="org.springframework.web.servlet.view.freemarker.FreeMarkerView"/>
+        <property name="cache" value="false"/>
+        <property name="suffix" value=".ftl"/>
+        <property name="contentType" value="text/html;charset=UTF-8"></property>
+        <property name="requestContextAttribute" value="request"/>
+        <property name="exposeSpringMacroHelpers" value="true"/>
+        <property name="exposeRequestAttributes" value="true"/>
+        <property name="exposeSessionAttributes" value="true"/>
+    </bean>-->
+    <bean id="viewResolver"   class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/views/"/>
+        <property name="suffix" value=".jsp"></property>
+    </bean>
+    <!-- freemarker的配置 -->
+    <!--<bean id="freemarkerConfig"
+          class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+        <property name="templateLoaderPath" value="/WEB-INF/views/"/>
+        <property name="defaultEncoding" value="utf-8"/>
+        <property name="freemarkerSettings">
+            <props>
+                <prop key="template_update_delay">0</prop>
+                <prop key="tag_syntax">auto_detect</prop>
+                &lt;!&ndash; 设置标签类型 两种：[] 和 <> 。[] 这种标记解析要快些 &ndash;&gt;
+                <prop key="default_encoding">UTF-8</prop>
+                <prop key="output_encoding">UTF-8</prop>
+                <prop key="locale">zh_CN</prop>
+                <prop key="datetime_format">yyyy-MM-dd HH:mm:ss</prop>
+                <prop key="date_format">yyyy-MM-dd</prop>
+                <prop key="time_format">HH:mm:ss</prop>
+                <prop key="number_format">#.##</prop>
+                <prop key="classic_compatible">true</prop>
+               &lt;!&ndash; <prop key="auto_import">/common/macros.ftl as p</prop>&ndash;&gt;
+                <prop key="boolean_format">true,false</prop>
+            </props>
+        </property>
+    </bean>-->
+    <!--<bean id="pathMatcher" class="org.springframework.util.AntPathMatcher"></bean>-->
+</beans>

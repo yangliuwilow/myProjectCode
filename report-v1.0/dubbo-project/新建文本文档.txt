@@ -1,0 +1,38 @@
+第一步：
+     启动liunx  root用户登录
+     su  root
+     输入密码
+     1。启动zookeeper
+           查看zookeeper是否启动  ps -ef|grep zookeeper  如果启动  kill -9  2438(进程号)
+
+
+     2. 进入zookeeper目录  cd: /usr/java/zookeeper-3.4.6/bin/
+     3../zkServer.sh start
+
+第二部：
+      1.dubbo-admin-2.4.1.war  放入tomcat Root目录下解压  
+      2.启动tomcat
+      访问：http://192.168.1.131:8080/  输入root  root
+
+
+
+
+2.加入dubbo
+    创建  dubbo.properties
+    添加 xml中加入 <value>classpath:dubbo.properties</value>
+  
+
+     
+ 
+提供者暴露的服务接口：
+
+     <bean id="ItcastUserService" class="com.willow.core.system.service.impl.ItcastUserServiceImpl"/>
+       <!-- 声明需要暴露的服务接口 -->
+     <dubbo:service interface="com.willow.core.system.service.ItcastUserService"
+                   ref="ItcastUserService"   />
+消费者：
+    <dubbo:reference id="itcastUserService" interface="com.willow.core.system.service.ItcastUserService" timeout="60000"   check="false"/>
+
+     
+
+进入tomcat logs 下：[root@localhost logs]# tail -f catalina.out 
